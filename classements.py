@@ -1,37 +1,36 @@
 import elo
 
 
-def n_ieme_colonne(n, ligne):
-    """
-    Avoir l'information se situant dans la n ieme colonne d'une ligne
-    """
-    colonne = 0
-    output = ""
-    for i in range(len(ligne)):
-        if ligne[i] == ",":
-            colonne += 1
-        elif colonne == n:
-            output += ligne[i]
-        else:
-            continue
-    return output
+def text_to_tab(file):
+    with open(file) as fichier:
+        text = fichier.read()
+    lines = text.split(sep="\n")
+    tab = [i.split(sep=",") for i in lines]
+    return tab
+
+
+def tab_to_file(tab, file):
+    with open(file, "w") as fichier:
+        for i in tab:
+            print(i, sep=",", end="\n", file=fichier)
 
 
 def recup_joueur(nom, prenom):
-    with open("classements.csv") as classement:
-        for i in classement:
-            if n_ieme_colonne(0, i) == nom and n_ieme_colonne(1, i) == prenom:
-                joueur = {
-                    "nom": nom,
-                    "prenom": prenom,
-                    "bullet": n_ieme_colonne(2, i),
-                    "nb_bullet": n_ieme_colonne(3, i),
-                    "blitz": n_ieme_colonne(4, i),
-                    "nb_blitz": n_ieme_colonne(5, i),
-                    "rapide": n_ieme_colonne(6, i),
-                    "nb_rapide": n_ieme_colonne(7, i),
-                }
-                return joueur
+    tab = text_to_tab("classements.csv")
+    for i in range(len(tab)):
+        if tab[i][0] == nom and tab[i][1] == prenom:
+            joueur = {
+                "ligne": i,
+                "nom": nom,
+                "prenom": prenom,
+                "bullet": tab[i][2],
+                "nb_bullet": tab[i][3],
+                "blitz": tab[i][4],
+                "nb_blitz": tab[i][5],
+                "rapide": tab[i][6],
+                "nb_rapide": tab[i][7],
+            }
+            return joueur
     return ""
 
 
@@ -40,14 +39,13 @@ def recup_joueur(nom, prenom):
 
 
 def changer_n_ieme_colonne(ligne, n, nv_val):
-    with open("classement.csv", mode="r") as classements:
-        j = 0
-        for i in classements:
-            if j == ligne:
-                
-            j += 1
-    pass
+    tab = text_to_tab("classements.csv")
+    tab[ligne][n] = nv_val
+    tab_to_file(tab, "classements.csv")
 
 
-def fin_de_game(j1, j2, issue):
-    pass
+def fin_de_game(j1, j2, issue, format):
+    j1_nom, j1_prenom = j1.split(" ")
+    j2_nom, j2_prenom = j2.split(" ")
+    j1_infos = recup_joueur(j1_nom, j1_prenom)
+    j2_infos = recup_joueur(j2_nom, j2_prenom)
