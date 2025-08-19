@@ -6,13 +6,13 @@ def text_to_tab(file):
         text = fichier.read()
     lines = text.split(sep="\n")
     tab = [i.split(sep=",") for i in lines]
-    return tab
+    return tab[:-1]
 
 
 def tab_to_file(tab, file):
     with open(file, "w") as fichier:
         for i in tab:
-            print(i, sep=",", end="\n", file=fichier)
+            print(*i, sep=",", end="\n", file=fichier)
 
 
 def recup_joueur(nom, prenom):
