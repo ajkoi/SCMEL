@@ -9,4 +9,4 @@ def nouvel_elo(elo_actuel, proba_de_gain, resultat_de_la_partie, coeff):
     """
     Renvoie le nouvel elo du joueur.
     """
-    return elo_actuel + coeff * (resultat_de_la_partie - proba_de_gain)
+    return round(elo_actuel + coeff * (resultat_de_la_partie - proba_de_gain))
