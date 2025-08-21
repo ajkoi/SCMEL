@@ -1,4 +1,5 @@
 import math
+import statistics
 import classements
 
 def min_dico(dico):
@@ -16,6 +17,11 @@ def max_dico(dico):
         if dico[cle]>max:
             max = dico[cle]
     return max
+
+
+def f_gauss(x, s, µ):
+    return (1/(s*math.sqrt(2*math.pi)))*math.e^(-(1/2)*((x-µ)/s)**2)
+
 
 def recup_data_date_joueur(format):
     dico_date_j = {}
@@ -41,7 +47,10 @@ def recup_data_date_joueur(format):
 
     return dico_date_j
 
-def tab_coef_date(format):
+
+
+
+def tab_date_normalise(format):
     dico_date_j = recup_data_date_joueur(format)
     min_date = min_dico(dico_date_j)
     max_date = max_dico(dico_date_j)
@@ -54,3 +63,16 @@ def tab_coef_date(format):
     
     return dico_date_j
 
+
+def tab_date_coef(format):
+    dico_date_j = tab_date_normalise(format)
+    dico_cle = dico_date_j.keys()
+
+    dico_coef_j = {}
+
+    for cle in dico_cle:
+        dico_coef_j[cle] = f_gauss(x = dico_date_j[cle],
+                                    s = 1,
+                                    µ = statistics.median(dico_date_j.values()))
+        
+    return dico_coef_j
