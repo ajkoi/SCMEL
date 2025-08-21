@@ -19,8 +19,8 @@ def max_dico(dico):
     return max
 
 
-def f_gauss(x, s, µ):
-    return (1/(s*math.sqrt(2*math.pi)))*math.e^(-(1/2)*((x-µ)/s)**2)
+def f_gauss(x, s, mu):
+    return (1/(s*math.sqrt(2*math.pi)))*math.e^(-(1/2)*(x-mu)/s)**2)
 
 
 def recup_data_date_joueur(format):
