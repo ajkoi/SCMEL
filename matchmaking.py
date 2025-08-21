@@ -8,7 +8,7 @@ def recup_data_date_joueur():
 
     nb_joueur = len(tab_data)
     for name in tab_data:
-        dico_date_j += {f"{name[1]} {name[2]}":0}
+        dico_date_j += {f"{name[1]} {name[2]}":"---"}
     
     tab_matchs = classements.text_to_tab("matchs.log")
     for date, joueurs,issues, formats in tab_matchs:
