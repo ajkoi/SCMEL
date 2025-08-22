@@ -171,57 +171,57 @@ def verif_match(tab_match, tab_interdit):   #fonctionnement semblable a pas-de-d
 
 
 def tout_match(format):
-    tab_joueurs = classements.text_to_tab()
+    tab_joueurs = classements.text_to_tab()[1:]     #tab des joueurs
     match = []
-    dico_coef_J = tab_date_coef(format)
+    dico_coef_J = tab_date_coef(format)     #dico joueur to coef, match interdit
     match_interdit = []
 
     for info_joueur in tab_joueurs:
-        match1, match2 = Deux_choix_joueur((info_joueur[1], info_joueur[2]), format)
-        match += [match1, match2]
+        match1, match2 = Deux_choix_joueur((info_joueur[1], info_joueur[2]), format)    #2 options de match par joueur
+        match += [match1, match2]       #rajouté à la liste
 
-        match_interdit += [dico_coef_J[f"{info_joueur[1]} {info_joueur[2]}"][1]]
+        match_interdit += [dico_coef_J[f"{info_joueur[1]} {info_joueur[2]}"][1]]    #ajout du match interdit
 
     tab_match_valable = verif_match(match, match_interdit)
-    tab_match_propre = pas_de_doublon(tab_match_valable)
+    tab_match_propre = pas_de_doublon(tab_match_valable)        #creation du tableau des matchs propre
 
     return tab_match_propre
 
 
 def attribution_coef(tab_match, format):
-    dico_coef_J = tab_date_coef(format)
-    tab_joueurs = classements.text_to_tab()
+    dico_coef_J = tab_date_coef(format)     #accès au tbleau des coefficients
     tab_tuple_coef_match = []
 
     for match in tab_match:
         j1, j2 = match.split("-")
-        tab_tuple_coef_match += (match, dico_coef_J[j1][0] * dico_coef_J[j2][0])
+        tab_tuple_coef_match += (match, dico_coef_J[j1][0] * dico_coef_J[j2][0])    #tuple du match avec son coeff  /!\ ptet qu'on mettra une addition plutôt qu'une multiplication
 
     return tab_tuple_coef_match
 
 
-def max_tab_ind1(tab):
-    max = tab[0][1]
+def max_tab_ind1(tab):      #fonction de max pour trier les matchs
+    max = tab[0][1]     #ca tri le [1] vu que le [0] c le match
     ind_max = 0
     for ind in range(len(tab)):
         if tab[ind][1] > max:
             max = tab[ind][1]
             ind_max = ind
-    return ind_max
+    return ind_max      #ca renvoie l'indice
 
 
 def classement_match(format):
-    tab_tuple_coef_match = attribution_coef(tout_match(format), format)
+    tab_tuple_coef_match = attribution_coef(tout_match(format), format)     #tab avec coef
     tab_match_copy = tab_tuple_coef_match.copy()
-    classemt_match = []
+    classemt_match = []     #tab qui acceuillera les match classés/triés
 
-    for i in range(len(tab_tuple_coef_match)):
+    for i in range(len(tab_tuple_coef_match)):      #c la boucle qui regarde le max ds le tab copié puis le supprim, etc
         ind_max = max_tab_ind1(tab_match_copy)
         classemt_match += tab_match_copy[ind_max]
         del tab_match_copy[ind_max]
+            #faut faire attention je pense que ca fonctionne mais ptet que j'ai fais un mauvais calcul et donc ce n'est pas "tab_match_copy[ind_max]" mais  "tab_match_copy[ind_max-i]" qui faut del
 
     return classemt_match
 
 
-def affich_classement(format):
+def affich_classement(format):      #cette fonct est simple mais ca suffit pour l'instant si on veut faire un truc mieux on pourra le faire après
     print(classement_match(format))
