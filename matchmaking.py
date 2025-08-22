@@ -2,6 +2,8 @@ import math
 import statistics
 import classements
 
+# min et max pour trouver les dates les plus récentes/anciennes
+
 def min_dico(dico):
     dico_cle = dico.keys()
     min = dico[dico_cle[0]]
@@ -23,25 +25,24 @@ def f_gauss(x, s, mu):
     return (1/(s*math.sqrt(2*math.pi)))*math.e^(-(1/2)*(x-mu)/s)**2
 
 
-def recup_data_date_joueur(format):
+def recup_data_date_joueur(format):     
     dico_date_j = {}
-    tab_data = classements.text_to_tab("classements.csv")[1:]
+    tab_data = classements.text_to_tab("classements.csv")[1:]   # recupère le classement entier pour avoir tt les joueurs
 
-    nb_joueur = len(tab_data)
     for name in tab_data:
-        dico_date_j += {f"{name[1]} {name[2]}":"---"}
+        dico_date_j += {f"{name[1]} {name[2]}":"---"}   #crée un dico qui sera rempli petit à petit
     
     tab_matchs = classements.text_to_tab("matchs.log")
     for date, joueurs,issues, format_match in tab_matchs:   ### faudra faire gaffe si on rajoute le nb delo gagné
         if format == format_match:
 
-            date_jeu = date[-3:-1]
+            date_jeu = date[-3:-1]      #coreespond à %j (c un nb entre 000 et 366) avec une petite correction quand on passera à  2026
             if date[:3] == 2026:
                 date_jeu += 365
 
             j1,j2 = joueurs.split('-')
             if dico_date_j[j1] == "---":
-                dico_date_j[j1] = date_jeu, f"{j2}-{j1}"
+                dico_date_j[j1] = date_jeu, f"{j2}-{j1}"    #date du dernier jeu + données du dernier adversaire, SI il n'en a pas eu
             if dico_date_j[j2] == "---":
                 dico_date_j[j2] = date_jeu, f"{j2}-{j1}"
 
@@ -51,21 +52,21 @@ def recup_data_date_joueur(format):
 
 
 def tab_date_normalise(format):
-    dico_date_j = recup_data_date_joueur(format)
+    dico_date_j = recup_data_date_joueur(format)    #reprend le dico d'avant, constitué de tuple de la date + du match
     min_date = min_dico(dico_date_j)
     max_date = max_dico(dico_date_j)
 
     dico_cle = dico_date_j.keys()
     for cle in dico_cle:
-        if dico_date_j[cle] == "---":
-            dico_date_j[cle] == min_date, 0
-        dico_date_j[cle] = int(math.fabs(dico_date_j[cle][0]-max_date)), dico_date_j[cle][1]
+        if dico_date_j[cle] == "---":       #si il n'a pas joué je lui donne la date la plus récente et ne lui attribue pas d'adversaire
+            dico_date_j[cle] == max_date, 0
+        dico_date_j[cle] = int(math.fabs(dico_date_j[cle][0]-max_date)), dico_date_j[cle][1]    #soustrait la date pour avoir en ensemble allant de O à max-min (tout est positif)
     
-    return dico_date_j
+    return dico_date_j      #dico tuple de "timedelta", du match avec comme cle le nom prenom
 
 
 def tab_date_coef(format):
-    dico_date_j = tab_date_normalise(format)
+    dico_date_j = tab_date_normalise(format)        #reprend le dico d'avant
     dico_cle = dico_date_j.keys()
 
     dico_coef_j = {}
@@ -75,7 +76,7 @@ def tab_date_coef(format):
                                     s = 1,
                                     µ = statistics.median(dico_date_j.values())), dico_date_j[cle][1]
         
-    return dico_coef_j
+    return dico_coef_j      #dico (cle: nom prenom) coef determiné par f_gauss et le "timedelta" et le dernier match
 
 
 ############################    Choix des 2 joueurs   ###############################
