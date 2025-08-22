@@ -94,6 +94,8 @@ def tab_date_coef(format):
 ############################    Choix des 2 joueurs   ###############################
 
 
+# Calcul de la différence entre les elo ET renseignement de celui a l'elo le plus élevé
+
 def diff_elo_joueur(j1: tuple, j2: tuple, format):  # format (nom, prenom)
     elo_j1 = classements.recup_joueur(j1[0], j1[1])[format]
     elo_j2 = classements.recup_joueur(j2[0], j2[1])[format]
@@ -105,6 +107,8 @@ def diff_elo_joueur(j1: tuple, j2: tuple, format):  # format (nom, prenom)
 
     return math.fabs(elo_j1 - elo_j2), max_elo
 
+
+#trouve les 2 minimum (en une boucle) dans un tableau de tuple (c la seconde valeur qui est "trié")
 
 def min_sousmin(tab):
     min = tab[0][1]
@@ -121,23 +125,21 @@ def min_sousmin(tab):
         if tab[ind][1] < sousmin and tab[ind][1] > min:
             sousmin = tab[ind][1]
             j_sousmin = tab[ind][0]
-    return (j_min, min), (j_sousmin, sousmin)
+    return (j_min, min), (j_sousmin, sousmin)   #2 tuples du joueur [0] avec son elo [1]
 
 
-def Deux_choix_joueur(joueur: tuple, format):
-    # elo_J = classements.recup_joueur(joueur[0], joueur[1])[format]
-
+def Deux_choix_joueur(joueur:str, format):      #joueur = "nom prenom"
     tab_joueurs = classements.text_to_tab()
 
-    for info_joueur in tab_joueurs:
+    for info_joueur in tab_joueurs: #tableau de tuple comprenant "nom prenom" et diff elo avec le joueur
         tab_elo += (
-            (info_joueur[0], info_joueur[1]),
-            diff_elo_joueur((info_joueur[0], info_joueur[1]), joueur, format)[0],
+            f"{info_joueur[1]} {info_joueur[2]}",
+            diff_elo_joueur((info_joueur[0], info_joueur[1]), (joueur.split('-')[0], joueur.split('-')[1]), format)[0],
         )
 
     J_min, J_sousmin = min_sousmin(tab_elo)
 
-    return f"{joueur}-{J_min[0]}", f"{joueur}-{J_sousmin[0]}"
+    return f"{joueur}-{J_min[0]}", f"{joueur}-{J_sousmin[0]}"   #2match du joueur avec le format de base "j1-j2"
 
 
 ############################    Corélation entre Match/Coef/Double   ###############################
