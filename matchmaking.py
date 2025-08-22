@@ -4,7 +4,7 @@ import classements
 
 
 def min_dico(dico):
-    dico_cle = dico.keys()
+    dico_cle = tuple(dico.keys())
     min = dico[dico_cle[0]]
     for cle in dico_cle:
         if dico[cle] < min:
@@ -13,7 +13,7 @@ def min_dico(dico):
 
 
 def max_dico(dico):
-    dico_cle = dico.keys()
+    dico_cle = tuple(dico.keys())
     max = dico[dico_cle[0]]
     for cle in dico_cle:
         if dico[cle] > max:
@@ -22,7 +22,8 @@ def max_dico(dico):
 
 
 def f_gauss(x, s, mu):
-    return (1 / (s * math.sqrt(2 * math.pi))) * math.e ^ (-(1 / 2) * (x - mu) / s) ** 2
+    """gaussienne pour le matchmaking"""
+    return (1 / (s * math.sqrt(2 * math.pi))) * math.e ** (-(1 / 2) * (x - mu) / s) ** 2
 
 
 def recup_data_date_joueur(format):
@@ -31,7 +32,7 @@ def recup_data_date_joueur(format):
 
     nb_joueur = len(tab_data)
     for name in tab_data:
-        dico_date_j += {f"{name[1]} {name[2]}": "---"}
+        dico_date_j[f"{name[0]} {name[1]}"] = "---"
 
     tab_matchs = classements.text_to_tab("matchs.log")
     for (
@@ -42,7 +43,9 @@ def recup_data_date_joueur(format):
     ) in tab_matchs:  ### faudra faire gaffe si on rajoute le nb delo gagné
         if format == format_match:
             date_jeu = date[-3:-1]
-            if date[:3] == 2026:
+            if (
+                date[:3] == 2026
+            ):  # a changer plus tard pour les années d'après sinon juste prendre le nombre de jours depuis epoch (ca doit pouvoir se faire en une commande je pense
                 date_jeu += 365
 
             j1, j2 = joueurs.split("-")
@@ -92,6 +95,9 @@ def tab_date_coef(format):
 
 
 def diff_elo_joueur(j1: tuple, j2: tuple, format):  # format (nom, prenom)
+    """
+    j1,j2:tuples(nom, prénom)
+    """
     elo_j1 = classements.recup_joueur(j1[0], j1[1])[format]
     elo_j2 = classements.recup_joueur(j2[0], j2[1])[format]
 
@@ -124,8 +130,9 @@ def min_sousmin(tab):
 def Deux_choix_joueur(joueur: tuple, format):
     # elo_J = classements.recup_joueur(joueur[0], joueur[1])[format]
 
-    tab_joueurs = classements.text_to_tab()
+    tab_joueurs = classements.text_to_tab("classements.csv")[1:]
 
+    tab_elo = []
     for info_joueur in tab_joueurs:
         tab_elo += (
             (info_joueur[0], info_joueur[1]),
