@@ -149,19 +149,19 @@ def pas_de_doublon(tab_match):
     tab_nv_match = []
 
     for match in tab_match:
-        j1, j2 = match.split("-")
+        j1, j2 = match.split("-")   #separe le match avec les 2 joueurs pour reperer j1-j2 comme j2-j1
         for ind_match in range(len(tab_match)):
             if f"{j1}-{j2}" not in tab_nv_match and f"{j2}-{j1}" not in tab_nv_match:
-                tab_nv_match += [match]
+                tab_nv_match += [match]     #si le match n'est pas ds ce nv tab alors il est inscrit
     return tab_nv_match
 
 
-def verif_match(tab_match, tab_interdit):
+def verif_match(tab_match, tab_interdit):   #fonctionnement semblable a pas-de-doublon()
     tab_nv_match = []
 
     for match_interdit in tab_interdit:
         j1, j2 = match_interdit.split("-")
-        for ind_match in range(len(tab_match)):
+        for ind_match in range(len(tab_match)):     #2 possibilités(qui sont les mêmes)
             if (
                 f"{j1}-{j2}" != tab_match[ind_match]
                 and f"{j2}-{j1}" != tab_match[ind_match]
