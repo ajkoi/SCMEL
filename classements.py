@@ -85,12 +85,12 @@ def fin_de_game(j1, j2, issue, format):
         elif format == "blitz":
             changer_n_ieme_colonne(j1_infos["ligne"], 4, j1_nv)
             changer_n_ieme_colonne(j2_infos["ligne"], 4, j2_nv)
-            changer_n_ieme_colonne(j1_infos["ligne"], 4, j1_infos["nb_blitz"] + 1)
-            changer_n_ieme_colonne(j2_infos["ligne"], 4, j2_infos["nb_blitz"] + 1)
+            changer_n_ieme_colonne(j1_infos["ligne"], 5, j1_infos["nb_blitz"] + 1)
+            changer_n_ieme_colonne(j2_infos["ligne"], 5, j2_infos["nb_blitz"] + 1)
         elif format == "rapide":
             changer_n_ieme_colonne(j1_infos["ligne"], 6, j1_nv)
             changer_n_ieme_colonne(j2_infos["ligne"], 6, j2_nv)
-            changer_n_ieme_colonne(j1_infos["ligne"], 6, j1_infos["nb_rapide"] + 1)
-            changer_n_ieme_colonne(j2_infos["ligne"], 6, j2_infos["nb_rapide"] + 1)
+            changer_n_ieme_colonne(j1_infos["ligne"], 7, j1_infos["nb_rapide"] + 1)
+            changer_n_ieme_colonne(j2_infos["ligne"], 7, j2_infos["nb_rapide"] + 1)
     with open("matchs.log", "a+") as log:
         log.write(f"{time.strftime('%Y-%m-%d %j')}, {j1}-{j2},{issue}, {format}")
