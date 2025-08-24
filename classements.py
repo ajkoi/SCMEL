@@ -93,4 +93,4 @@ def fin_de_game(j1, j2, issue, format):
             changer_n_ieme_colonne(j1_infos["ligne"], 7, j1_infos["nb_rapide"] + 1)
             changer_n_ieme_colonne(j2_infos["ligne"], 7, j2_infos["nb_rapide"] + 1)
     with open("matchs.log", "a+") as log:
-        log.write(f"{time.strftime('%Y-%m-%d %j')}, {j1}-{j2},{issue}, {format}")
+        log.write(f"{time.strftime('%Y-%m-%d %j')},{j1}-{j2},{issue},{format}\n")
