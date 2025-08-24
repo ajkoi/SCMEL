@@ -35,9 +35,8 @@ def recup_data_date_joueur(format):
     ]  # recupère le classement entier pour avoir tt les joueurs
 
     for name in tab_data:
-        dico_date_j += {
-            f"{name[1]} {name[2]}": "---"
-        }  # crée un dico qui sera rempli petit à petit
+        dico_date_j[f"{name[0]} {name[1]}"] = "---"
+        # crée un dico qui sera rempli petit à petit
 
     tab_matchs = classements.text_to_tab("matchs.log")
     for (
@@ -46,15 +45,17 @@ def recup_data_date_joueur(format):
         issues,
         format_match,
     ) in tab_matchs:  ### faudra faire gaffe si on rajoute le nb delo gagné
+        print(format_match)
         if format == format_match:
             date_jeu = date[
-                -3:-1
+                -3:
             ]  # coreespond à %j (c un nb entre 000 et 366) avec une petite correction quand on passera à  2026
 
             if date[:3] == 2026:
                 date_jeu += 365
 
             j1, j2 = joueurs.split("-")
+            print(j1, j2)
             if dico_date_j[j1] == "---":
                 dico_date_j[j1] = (
                     date_jeu,
@@ -73,14 +74,15 @@ def tab_date_normalise(format):
     min_date = min_dico(dico_date_j)
     max_date = max_dico(dico_date_j)
 
-    dico_cle = dico_date_j.keys()
+    dico_cle = dico_date_j.keys()  # joueurs
     for cle in dico_cle:
         if (
             dico_date_j[cle] == "---"
         ):  # si il n'a pas joué je lui donne la date la plus récente et ne lui attribue pas d'adversaire
             dico_date_j[cle] == max_date, 0
+        print(max_date)
         dico_date_j[cle] = (
-            int(math.fabs(dico_date_j[cle][0] - max_date)),
+            int(math.fabs(int(dico_date_j[cle][0]) - int(max_date[0]))),
             dico_date_j[cle][1],
         )  # soustrait la date pour avoir en ensemble allant de O à max-min (tout est positif)
 
@@ -98,7 +100,9 @@ def tab_date_coef(format):
     for cle in dico_cle:
         dico_coef_j[cle] = (
             f_gauss(
-                x=dico_date_j[cle][0], s=1, µ=statistics.median(dico_date_j.values())
+                x=dico_date_j[cle][0],
+                s=1,
+                mu=statistics.median([i[0] for i in dico_date_j.values()]),
             ),
             dico_date_j[cle][1],
         )
