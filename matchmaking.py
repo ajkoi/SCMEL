@@ -131,10 +131,9 @@ def diff_elo_joueur(j1: tuple, j2: tuple, format):  # format (nom, prenom)
     return math.fabs(elo_j1 - elo_j2), max_elo
 
 
-# trouve les 2 minimum (en une boucle) dans un tableau de tuple (c la seconde valeur qui est "trié")
-
-
 def min_sousmin(tab):
+    """trouve les 2 minimums (regarde la seconde valeure)"""
+    print(tab)
     min = tab[0][1]
     j_min = tab[0][0]
     sousmin = tab[0][1] if tab[1][1] < tab[0][1] else tab[1][1]
@@ -161,14 +160,16 @@ def Deux_choix_joueur(joueur: tuple, format):
     for info_joueur in (
         tab_joueurs
     ):  # tableau de tuple comprenant "nom prenom" et diff elo avec le joueur
-        tab_elo += (
-            f"{info_joueur[1]} {info_joueur[2]}",
-            diff_elo_joueur(
-                (info_joueur[0], info_joueur[1]),
-                (joueur.split("-")[0], joueur.split("-")[1]),
-                format,
-            )[0],
-        )
+        tab_elo += [
+            (
+                f"{info_joueur[0]} {info_joueur[1]}",
+                diff_elo_joueur(
+                    (info_joueur[0], info_joueur[1]),
+                    (joueur[0], joueur[1]),
+                    format,
+                )[0],
+            )
+        ]
 
     J_min, J_sousmin = min_sousmin(tab_elo)
 
