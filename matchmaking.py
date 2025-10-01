@@ -71,6 +71,7 @@ def tab_date_normalise(format):
     dico_date_j = recup_data_date_joueur(
         format
     )  # reprend le dico d'avant, constitué de tuple de la date + du match
+    print(dico_date_j)
     min_date = min_dico(dico_date_j)
     max_date = max_dico(dico_date_j)
 
@@ -212,7 +213,7 @@ def verif_match(tab_match, tab_interdit):  # fonctionnement semblable a pas-de-d
 
 
 def tout_match(format):
-    tab_joueurs = classements.text_to_tab()[1:]  # tab des joueurs
+    tab_joueurs = classements.text_to_tab("classements.csv")[1:]  # tab des joueurs
     match = []
     dico_coef_J = tab_date_coef(format)  # dico joueur to coef, match interdit
     match_interdit = []
