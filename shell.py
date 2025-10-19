@@ -2,6 +2,37 @@ import cmd
 import classements
 
 
+def merge(arr1, arr2, col):
+    n1 = 0
+    n2 = 0
+    o = []
+    while n1 < len(arr1) and n2 < len(arr2):
+        if arr1[n1][col] < arr2[n2][col]:
+            o += [arr1[n1]]
+            n1 += 1
+        else:
+            o += [arr2[n2]]
+            n2 += 1
+    o += arr1[n1:]
+    o += arr2[n2:]
+    return o
+
+
+def mergesort(arr, col):
+    subs = [[arr[i]] for i in range(len(arr))]
+    new = []
+    while len(subs) > 1:
+        n = 0
+        if len(subs) % 2 == 1:
+            subs += [[]]
+        while n + 1 < len(subs):
+            new += [merge(subs[n], subs[n + 1], col)]
+            n += 2
+        subs = new
+        new = []
+    return subs[0]
+
+
 class MyShell(cmd.Cmd):
     intro = "Bienvenue dans le shell du SCMEL"
     prompt = "(SCMEL)"
@@ -56,6 +87,26 @@ class MyShell(cmd.Cmd):
 
     def do_classement(self, line):
         tab = classements.text_to_tab("classements.csv")
+        args = line.split(" ") + [0]
+        match args[0]:
+            case "nom":
+                tab[1:] = mergesort(tab[1:], 0)[::-1]
+            case "prenom":
+                tab[1:] = mergesort(tab[1:], 1)[::-1]
+            case "bullet":
+                tab[1:] = mergesort(tab[1:], 2)[::-1]
+            case "nb_bullet":
+                tab[1:] = mergesort(tab[1:], 3)[::-1]
+            case "blitz":
+                tab[1:] = mergesort(tab[1:], 4)[::-1]
+            case "nb_blitz":
+                tab[1:] = mergesort(tab[1:], 5)[::-1]
+            case "rapide":
+                tab[1:] = mergesort(tab[1:], 6)[::-1]
+            case "nb_rapide":
+                tab[1:] = mergesort(tab[1:], 7)[::-1]
+            case _:
+                pass
         largeur = [0 for i in range(len(tab[0]))]
         for i in range(len(tab)):
             for j in range(len(tab[0])):

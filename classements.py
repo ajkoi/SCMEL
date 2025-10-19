@@ -7,6 +7,14 @@ def text_to_tab(file):
         text = fichier.read()
     lines = text.split(sep="\n")
     tab = [i.split(sep=",") for i in lines]
+    for i in range(len(tab)):
+        for j in range(len(tab[i])):
+            try:
+                tab[i][j] = int(tab[i][j])
+            except ValueError:
+                pass
+            finally:
+                pass
     return tab[:-1]
 
 
