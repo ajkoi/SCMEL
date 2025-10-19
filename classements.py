@@ -35,6 +35,11 @@ def recup_joueur(nom, prenom):
     return ""
 
 
+def nouveau_joueur(nom, prenom):
+    with open("classements.csv", "a+") as classement:
+        classement.write(f"{nom},{prenom},1000,0,1000,0,1000,0,1000,0")
+
+
 def changer_n_ieme_colonne(ligne, n, nv_val):
     tab = text_to_tab("classements.csv")
     tab[ligne][n] = nv_val
@@ -50,11 +55,13 @@ def calcul_coeff(joueur, format):
         return 10
 
 
-def fin_de_game(j1, j2, issue, format):
-    j1_nom, j1_prenom = j1.split(" ")
-    j2_nom, j2_prenom = j2.split(" ")
-    j1_infos = recup_joueur(j1_nom, j1_prenom)
-    j2_infos = recup_joueur(j2_nom, j2_prenom)
+def fin_de_game(j1_infos, j2_infos, issue, format):
+    # j1_nom, j1_prenom = j1.split(" ")
+    # j2_nom, j2_prenom = j2.split(" ")
+    # j1_infos = recup_joueur(j1_nom, j1_prenom)
+    # j2_infos = recup_joueur(j2_nom, j2_prenom)
+    j1 = f"{j1_infos['nom']} {j1_infos['prenom']}"
+    j2 = f"{j2_infos['nom']} {j2_infos['prenom']}"
     if format != "rapide" and format != "blitz" and format != "bullet":
         print("veuillez indiquer un format valide")
         print(format)
