@@ -55,7 +55,22 @@ class MyShell(cmd.Cmd):
             )
 
     def do_classement(self, line):
-        pass
+        tab = classements.text_to_tab("classements.csv")
+        largeur = [0 for i in range(len(tab[0]))]
+        for i in range(len(tab)):
+            for j in range(len(tab[0])):
+                if largeur[j] < len(str(tab[i][j])):
+                    largeur[j] = len(str(tab[i][j]))
+        for i in range(len(tab[0])):
+            print(f"{tab[0][i]:{largeur[i] + 1}}", end="|")
+        print()
+        for i in range(len(tab[0])):
+            print("".join(["-" for _ in range(largeur[i] + 1)]), end="|")
+        for i in range(1, len(tab)):
+            print()
+            for j in range(len(tab[0])):
+                print(f"{tab[i][j]:{largeur[j] + 1}}", end="|")
+        print()
 
     def do_exit(self, line):
         """
