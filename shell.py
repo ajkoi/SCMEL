@@ -19,6 +19,9 @@ class MyShell(cmd.Cmd):
                 print(f"{*args} à été rajouté aux joueurs.")
         pass
 
+    def do_fin_de_partie(self, line):
+        pass
+
     def do_exit(self, line):
         """
         Sortir du shell.
