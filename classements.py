@@ -35,6 +35,11 @@ def recup_joueur(nom, prenom):
     return ""
 
 
+def nouveau_joueur(nom, prenom):
+    with open("classements.csv", "a+") as classement:
+        classement.write(f"{nom},{prenom},1000,0,1000,0,1000,0,1000,0")
+
+
 def changer_n_ieme_colonne(ligne, n, nv_val):
     tab = text_to_tab("classements.csv")
     tab[ligne][n] = nv_val
