@@ -14,6 +14,7 @@ issue : 1 ou 0.5 ou 0, du point de vue du joueur 1 (1 est une victoire, 0.5 est 
 format: bullet ou rapide ou blitz.
 
 Permet d'actualiser le classement et l'élo des joueurs
+
 `nouveau_joueur nom prenom`
 
 Crée un nouveau joueur si le nom et le prénom sont libre.
