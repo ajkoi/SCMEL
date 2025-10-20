@@ -86,25 +86,33 @@ class MyShell(cmd.Cmd):
             )
 
     def do_classement(self, line):
+        """Optionnel: nom/prenom/bullet/nb_bullet/blitz/nb_blitz/rapide/nb_rapide pour trier en fonction de l'argument."""
         tab = classements.text_to_tab("classements.csv")
         args = line.split(" ") + [0]
+        match args[1]:
+            case "croissant":
+                ordre = 1
+            case "decroissant":
+                ordre = -1
+            case _:
+                ordre = -1
         match args[0]:
             case "nom":
-                tab[1:] = mergesort(tab[1:], 0)[::-1]
+                tab[1:] = mergesort(tab[1:], 0)[::ordre]
             case "prenom":
-                tab[1:] = mergesort(tab[1:], 1)[::-1]
+                tab[1:] = mergesort(tab[1:], 1)[::ordre]
             case "bullet":
-                tab[1:] = mergesort(tab[1:], 2)[::-1]
+                tab[1:] = mergesort(tab[1:], 2)[::ordre]
             case "nb_bullet":
-                tab[1:] = mergesort(tab[1:], 3)[::-1]
+                tab[1:] = mergesort(tab[1:], 3)[::ordre]
             case "blitz":
-                tab[1:] = mergesort(tab[1:], 4)[::-1]
+                tab[1:] = mergesort(tab[1:], 4)[::ordre]
             case "nb_blitz":
-                tab[1:] = mergesort(tab[1:], 5)[::-1]
+                tab[1:] = mergesort(tab[1:], 5)[::ordre]
             case "rapide":
-                tab[1:] = mergesort(tab[1:], 6)[::-1]
+                tab[1:] = mergesort(tab[1:], 6)[::ordre]
             case "nb_rapide":
-                tab[1:] = mergesort(tab[1:], 7)[::-1]
+                tab[1:] = mergesort(tab[1:], 7)[::ordre]
             case _:
                 pass
         largeur = [0 for i in range(len(tab[0]))]
