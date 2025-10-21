@@ -2,35 +2,50 @@ import cmd
 import classements
 
 
-def merge(arr1, arr2, col):
-    n1 = 0
-    n2 = 0
+def merge(tab, left, mid, right, col):
     o = []
-    while n1 < len(arr1) and n2 < len(arr2):
-        if arr1[n1][col] < arr2[n2][col]:
-            o += [arr1[n1]]
+    n1, n2 = left, mid
+    # tab = arr.copy()
+    while n1 < mid and n2 < right:
+        if tab[n1][col] < tab[n2][col]:
+            o += [tab[n1]]
             n1 += 1
         else:
-            o += [arr2[n2]]
+            o += [tab[n2]]
             n2 += 1
-    o += arr1[n1:]
-    o += arr2[n2:]
+    o += tab[n1:mid]
+    o += tab[n2:right]
     return o
 
 
 def mergesort(arr, col):
-    subs = [[arr[i]] for i in range(len(arr))]
-    new = []
-    while len(subs) > 1:
-        n = 0
-        if len(subs) % 2 == 1:
-            subs += [[]]
-        while n + 1 < len(subs):
-            new += [merge(subs[n], subs[n + 1], col)]
-            n += 2
-        subs = new
+    n1 = 1
+    # arr = arr.copy()
+    larr = len(arr)
+    while n1 < larr:
         new = []
-    return subs[0]
+        n2 = 0
+        while n2 <= larr:
+            new += merge(arr, n2, min(n2 + n1, larr), min(n2 + 2 * n1, larr), col)
+            n2 += 2 * n1
+        n1 *= 2
+        arr = new
+    return arr
+
+
+# def mergesort(arr, col):
+#     subs = [[arr[i]] for i in range(len(arr))]
+#     new = []
+#     while len(subs) > 1:
+#         n = 0
+#         if len(subs) % 2 == 1:
+#             subs += [[]]
+#         while n + 1 < len(subs):
+#             new += [merge(subs[n], subs[n + 1], col)]
+#             n += 2
+#         subs = new
+#         new = []
+#     return subs[0]
 
 
 class MyShell(cmd.Cmd):
@@ -38,7 +53,9 @@ class MyShell(cmd.Cmd):
     prompt = "(SCMEL)"
 
     def do_nouveau_joueur(self, line):
-        """Args: nom, prénom, crée un nouveau joueur"""
+        """Args: nom, prénom
+        Crée un nouveau joueur si le nom et le prénom sont libre.
+        """
         args = line.split(" ")
         if len(args) != 2:
             print("Seulement le nom et le prénom")
@@ -121,14 +138,14 @@ class MyShell(cmd.Cmd):
                 if largeur[j] < len(str(tab[i][j])):
                     largeur[j] = len(str(tab[i][j]))
         for i in range(len(tab[0])):
-            print(f"{tab[0][i]:{largeur[i] + 1}}", end="|")
+            print(f"{tab[0][i]:<{largeur[i] + 1}}", end="|")
         print()
         for i in range(len(tab[0])):
             print("".join(["-" for _ in range(largeur[i] + 1)]), end="|")
         for i in range(1, len(tab)):
             print()
             for j in range(len(tab[0])):
-                print(f"{tab[i][j]:{largeur[j] + 1}}", end="|")
+                print(f"{tab[i][j]:<{largeur[j] + 1}}", end="|")
         print()
 
     def do_exit(self, line):
